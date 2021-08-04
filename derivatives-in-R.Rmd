@@ -11,3 +11,105 @@ library(tidyverse)
 library(palmerpenguins)
 ```
 
+
+## First order univariate derivatives:
+
+```{r}
+# Part A
+fx <- expression(x^2)
+
+df_dx <- D(expr = fx, name = "x")
+
+df_dx
+x <- 3
+eval(expr = df_dx)
+
+
+# Part B
+Pa <- expression(2*(3*a+2)^4 - 5)
+
+dP_da <- D(expr = Pa, name = "a")
+
+dP_da
+a <- 1.2
+eval(expr = dP_da)
+
+
+# Part C
+gt <- expression(-4*t/(t^2 +1)^3)
+
+dg_dt <- D(expr = gt, name = "t")
+t <- 0
+eval(expr = dg_dt)
+```
+
+## Higher order univariate derivatives:
+
+```{r}
+Gz <- expression(4.6 - 1.9 * z^3)
+dG_dz <- D(expr = Gz, name = "z")
+dG_dz
+d2G_dz2 <- D(expr = dG_dz, name = "z")
+d2G_dz2
+```
+
+  
+
+## Partial derivatives:
+
+```{r}
+f_xyz <- expression(2*x^2*y -3*x + 1 + 4*z^4*x)
+df_dx <- D(expr = f_xyz, name = "x")
+df_dx
+df_dy <- D(expr = f_xyz, name = "y")
+df_dy
+df_dz <- D(expr = f_xyz, name = "z")
+df_dz
+```
+
+
+## Make some plots:
+
+```{r}
+# fx already used, using hy instead
+hy <- function(y) {
+  (2.4 * exp(-0.05*y) * sin(y))
+}
+
+ggplot(data = data.frame(y = c(-0.5, 0.5)), aes(x = y)) +
+  stat_function(fun = hy)
+```
+
+
+```{r}
+# another way to use ggplot with the same function
+
+hy <- function(y) {
+  (2.4 * exp(-0.05*y) * sin(y))
+}
+
+ggplot(data = NULL) +
+  stat_function(fun = hy) +
+  xlim(min = -0.5, max = 0.5)
+```
+
+
+```{r}
+ggplot(data = penguins, aes(x = bill_depth_mm, y = bill_length_mm)) +
+  geom_point(aes(color = species)) + 
+  labs(x = "Penguin bill depth (mm)",
+       y = "Penguin bill length (mm)",
+       title = "Penguin bill length vs. depth")
+```
+
+
+```{r}
+# Jitterplot
+ggplot(data = penguins, aes(x = species, y = flipper_length_mm)) +
+  geom_jitter(aes(color = species)) + 
+  labs(x = "Species",
+       y = "Penguin flipper length (mm)",
+       title = "Penguin flipper length by species")
+
+```
+
